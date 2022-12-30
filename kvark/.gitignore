@@ -1,0 +1,8 @@
+# Editor-specific settings
+.lite_project.lua
+.vscode
+shell.nix
+.envrc
+
+# Build artifacts
+.build

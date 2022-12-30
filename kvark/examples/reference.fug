@@ -1,0 +1,76 @@
+# Optional Header-In-File
+# =======================
+declare type    = executable;
+declare by      = "Valentin Romanovich Popov", 
+                  "Kenneth William Beier";
+declare rules   = strict, no_macros, no_async;
+
+# Import Section
+# ==============
+import { * } from "std";
+import { exp, lin } from "lib_statistics";
+
+# Type Declarations
+# =================
+datatype string(pointer) returns { self, uppercase, lowercase } {
+    const self = pointer.length;
+    malloc self = pointer;
+
+    uppercase = self.map + 37;
+    lowercase = self.map - 37;
+    split = self.map;
+}
+
+# Available data types
+# as of 18th November, 2022
+# =========================
+
+# Implementation Strings    # Description
+string a = "Decode"         # An array of characters
+char  aa = 'a';             # A character
+
+# Implementation Integer    # MINIMUM                       | MAXIMUM                       | SUM
+octet   i8    = 10;         # -128                          | 127                           | 255
+word    i16   = 10;         # -32.768                       | 32.767                        | 65.535
+dword   i32   = 10;         # −2.147.483.648	            | −2.147.483.647                | 4.294.967.295
+qword   i64   = 10;         # −9.223.372.036.854.775.808	| −9.223.372.036.854.775.807    | 18.446.744.073.709.551.615
+oword   i128  = 10;         # -1,70141·10^38                | 1,70141·10^38 - 1             | 3,40282·1038
+
+# Implementation Floats     # EXPONENT  | SIGNIFICAND FIELD | TOTAL BITS  || EXPONENT BIAS  | BITS PRECISION | NUMBER OF DECIMAL DIGITS
+half   h = 10.0;            # 5         | 10                | 16          || 15             | 11             | ~3.3
+float  f = 10.0;            # 8         | 23                | 32          || 127            | 24             | ~7.2
+double d = 10.0;            # 11        | 52                | 64          || 1023           | 53             | ~15.9
+extp   e = 10.0;            # 15        | 64                | 80          || 16383          | 64             | ~19.2
+quad   q = 10.0;            # 15        | 112               | 128         || 16383          | 113            | ~34.0
+
+# Implementation Binary     # Description
+byte  by = 1;               # 8 bits = 1 byte
+bit   bi = by;              # either 1 or 0
+
+# Implementation Boolean    # Description
+bool   b = true | false;    # either true or false
+
+# Variant 1
+# =========
+namespace main
+{
+    function main()
+    {
+        const {hw = self, hwup = uppercase} = string("hello, world");
+        printf(hw, hwup);
+    }
+}
+
+# Variant 2
+# =========
+namespace main
+{
+    class main()
+    {
+        function main()
+        {
+            const {hw = self, hwup = uppercase} = string("hello, world");
+            printf(hw, hwup);
+        }
+    }
+}

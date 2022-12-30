@@ -1,0 +1,31 @@
+declare type    = exec;
+declare authors = "Valentin Romanovich Popov", "Kenneth-William Beier";
+declare limits  = strict, no_macros, no_async;
+
+import { printf, malloc } from "std";
+
+type string(pointer) returns { self, uppercase, lowercase } {
+    const size = pointer.length;
+    malloc size = pointer;
+
+    self = size
+
+    function applyUpperCase(character) returns { character } {
+      if(character >= 97 && character <= 122)
+        character -= 32
+    }
+
+    function applyLowerCase(character) returns { character } {
+      if(character >= 65 && character <= 90)
+        character += 32
+    }
+
+    uppercase = self.map(applyUpperCase);
+    lowercase = self.map(applyLowerCase);
+    split = self.map();
+}
+
+function main() {
+    const {hello_world = self, hello_world_uppercase = uppercase} = string("hello, world");
+    printf(hello_world, hello_world_uppercase);
+}
