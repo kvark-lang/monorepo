@@ -36,6 +36,7 @@ export function asUint(
 	return [];
 }
 
+// ELF HEADER VALUES FOR SPECIFIC BINARY ARCHITECTURES 
 export const elfABI = {
 	NONE: 0,
 	HPUX: 1,
@@ -56,6 +57,13 @@ export const elfABI = {
 	OPENVOS: 18,
 };
 
+//  ELF FILE HEADER - TYPE OF FILE
+//  ------------------------------
+//  NONE:	Meaning unknown
+//	RELOC:	.o-file, can be linked with other .o-files to create an executable
+//	EXEC:	Executable file
+//	DYN:	.so-file, shared object - linked with running applications
+//  CORE:	Not known
 export const elfType = {
 	NONE: 0,
 	RELOCATABLE: 1,
@@ -63,6 +71,7 @@ export const elfType = {
 	DYNAMIC: 3,
 	CORE: 4,
 };
+
 
 export const elfMachine = {
 	NONE: 0x0,
