@@ -1,6 +1,9 @@
 # Editor-specific settings
 .lite_project.lua
 .vscode
+*.cuda-proj
+
+# Nix-specific
 shell.nix
 .envrc
 
