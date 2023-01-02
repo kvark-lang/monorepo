@@ -1,3 +1,4 @@
+#!/usr/bin/env make
 ROOT_DIR=$(shell pwd)
 BUILD_DIR=${ROOT_DIR}/.build
 

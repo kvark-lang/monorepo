@@ -8,10 +8,10 @@ import {
 } from "./types.ts";
 
 export function factory(
-	_options?: JasmFactoryOptions,
+	_options?: JasmFactoryOptions
 ): JasmFactory {
-	// TODO not just x86
-	return x86;
+  // TODO make it work with WASM too
+  return x86;
 }
 
 export type {

@@ -1,0 +1,44 @@
+{
+  "scriptId": "84",
+  "url": "deno:cli/js/40_testing.js",
+  "functions": [
+    {
+      "functionName": "handleOpSanitizerDelayMacrotask",
+      "ranges": [
+        { "startOffset": 1720, "endOffset": 1881, "count": 1 },
+        { "startOffset": 1818, "endOffset": 1822, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getTestOrigin",
+      "ranges": [{ "startOffset": 38774, "endOffset": 38896, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "runTests",
+      "ranges": [
+        { "startOffset": 39210, "endOffset": 40731, "count": 1 },
+        { "startOffset": 39505, "endOffset": 39511, "count": 0 },
+        { "startOffset": 39799, "endOffset": 40362, "count": 0 },
+        { "startOffset": 40397, "endOffset": 40727, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 39418, "endOffset": 39437, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 39531, "endOffset": 39558, "count": 0 }],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 39959, "endOffset": 40179, "count": 0 }],
+      "isBlockCoverage": true
+    }
+  ]
+}
