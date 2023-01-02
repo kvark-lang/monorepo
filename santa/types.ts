@@ -78,3 +78,7 @@ export enum ELFMachine {
   BPF = 0xF7,
   M65816 = 0x101,
 }
+
+export interface ELFSection {
+  name: string;
+}
