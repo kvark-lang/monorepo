@@ -17,14 +17,13 @@ const lexer = moo.compile({
 var grammar = {
     Lexer: lexer,
     ParserRules: [
-    {"name": "comment", "symbols": [(lexer.has("hash") ? {type: "hash"} : hash), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word)]},
-    {"name": "comment", "symbols": [(lexer.has("hash") ? {type: "hash"} : hash), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word)]},
-    {"name": "comment", "symbols": [(lexer.has("hash") ? {type: "hash"} : hash), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word)]},
-    {"name": "comment", "symbols": [(lexer.has("hash") ? {type: "hash"} : hash), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word)]},
-    {"name": "declare", "symbols": [{"literal":"declare"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("dq") ? {type: "dq"} : dq), (lexer.has("word") ? {type: "word"} : word), (lexer.has("dq") ? {type: "dq"} : dq)]},
-    {"name": "declare", "symbols": [{"literal":"declare"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word)]}
+    {"name": "integers", "symbols": [{"literal":"octet"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("number") ? {type: "number"} : number), (lexer.has("lineend") ? {type: "lineend"} : lineend)]},
+    {"name": "integers", "symbols": [{"literal":"word"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("number") ? {type: "number"} : number), (lexer.has("lineend") ? {type: "lineend"} : lineend)]},
+    {"name": "integers", "symbols": [{"literal":"dword"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("number") ? {type: "number"} : number), (lexer.has("lineend") ? {type: "lineend"} : lineend)]},
+    {"name": "integers", "symbols": [{"literal":"qword"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("number") ? {type: "number"} : number), (lexer.has("lineend") ? {type: "lineend"} : lineend)]},
+    {"name": "integers", "symbols": [{"literal":"oword"}, (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("word") ? {type: "word"} : word), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("eq") ? {type: "eq"} : eq), (lexer.has("ws") ? {type: "ws"} : ws), (lexer.has("number") ? {type: "number"} : number), (lexer.has("lineend") ? {type: "lineend"} : lineend)]}
 ]
-  , ParserStart: "comment"
+  , ParserStart: "integers"
 }
 if (typeof module !== 'undefined'&& typeof module.exports !== 'undefined') {
    module.exports = grammar;

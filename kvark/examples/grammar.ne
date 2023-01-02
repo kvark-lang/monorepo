@@ -12,12 +12,17 @@ const lexer = moo.compile({
 });
 %}
 
+#Test Font idk what to say
+
 @lexer lexer
 
-comment -> %hash %ws %word
-        |  %hash %ws %word %ws %word
-        |  %hash %ws %word %ws %word %ws %word
-        |  %hash %ws %word %ws %word %ws %word %ws %word
+#comment -> %hash %ws %word
 
-declare -> "declare" %ws %word %ws %eq %ws %dq %word %dq
-        |  "declare" %ws %word %ws %eq %ws %word
+#declare -> "declare" %ws %word %ws %eq %ws %dq %word %dq
+#        |  "declare" %ws %word %ws %eq %ws %word
+
+integers -> "octet" %ws %word %ws %eq %ws %number %lineend
+        | "word" %ws %word %ws %eq %ws %number %lineend
+        | "dword" %ws %word %ws %eq %ws %number %lineend
+        | "qword" %ws %word %ws %eq %ws %number %lineend
+        | "oword" %ws %word %ws %eq %ws %number %lineend
