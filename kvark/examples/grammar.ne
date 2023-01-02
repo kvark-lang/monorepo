@@ -14,7 +14,10 @@ const lexer = moo.compile({
 
 @lexer lexer
 
-#comment -> %hash %ws %word
+comment -> %hash %ws %word
+        |  %hash %ws %word %ws %word
+        |  %hash %ws %word %ws %word %ws %word
+        |  %hash %ws %word %ws %word %ws %word %ws %word
 
 declare -> "declare" %ws %word %ws %eq %ws %dq %word %dq
         |  "declare" %ws %word %ws %eq %ws %word
