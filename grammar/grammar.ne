@@ -4,11 +4,11 @@
 
 statement -> intDeclaration:+
 
-intDeclaration -> "octet" _ alphanumeric _ "=" _ number semicolon
-        | "word" _ alphanumeric _ "=" _ number semicolon
-        | "dword" _ alphanumeric _ "=" _ number semicolon
-        | "qword" _ alphanumeric _ "=" _ number semicolon
-        | "oword" _ alphanumeric _ "=" _ number semicolon
+intDeclaration -> "octet" __ alphanumeric _ "=" _ number semicolon
+        | "word" __ alphanumeric _ "=" _ number semicolon
+        | "dword" __ alphanumeric _ "=" _ number semicolon
+        | "qword" __ alphanumeric _ "=" _ number semicolon
+        | "oword" __ alphanumeric _ "=" _ number semicolon
 
 number -> decimal | int
 semicolon -> ";"

@@ -8,6 +8,9 @@ dev:
 dev-run-tests: dev
 	deno test --coverage=.build/.cov .
 	
+railroad:
+	deno run -A npm:nearley/nearley-railroad grammar.ne -o ${BUILD_DIR}/railroad.html
+	
 clean:
 	rm -rf ${BUILD_DIR}
 	mkdir ${BUILD_DIR}

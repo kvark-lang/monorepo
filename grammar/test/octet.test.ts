@@ -12,14 +12,11 @@ Deno.test({
       fn: () => {
         parser.feed("octet i8 = 10;");
         parser.feed("word  i16 = 10;");
-        parser.feed("dword  i32 = 10;");
-        console.log(parser.results);
+        parser.feed("dword i32 = 10;");
+        parser.feed("qword i64 = 10;");
+        parser.feed("oword i128 = 10;");
+        console.log(parser.results[0]);
       },
     });
   },
 });
-
-// parser.feed("word i16 = 10;");
-// parser.feed("dword i32 = 10;");
-// parser.feed("qword i64 = 10;");
-// parser.feed("oword i128 = 10;"
