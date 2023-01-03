@@ -2,6 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.154.0/testing/asserts.ts";
 import nearley from "npm:nearley";
 import grammar from "../.build/parser.ts";
 
+
 Deno.test({
   name: "test parsing of data types",
   fn: async (t) => {
@@ -10,6 +11,8 @@ Deno.test({
     await t.step({
       name: "test octet",
       fn: () => {
+        // TODO actually assert something
+        // FIXME it seems there are many results? is the grammar ambigious?
         parser.feed("octet i8 = 10;");
         parser.feed("word  i16 = 10;");
         parser.feed("dword i32 = 10;");
