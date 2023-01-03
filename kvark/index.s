@@ -35,6 +35,8 @@ BITS 32
   
   _start:
   
-  ; your program here
+  mov eax, 1
+  mov ebx, 0
+  int 0x80
   
   filesize      equ     $ - $$

@@ -117,6 +117,12 @@ function determineTypes(data: JasmIr) {
         dst: { a: ["Z"], t: ["v"] },
       };
     },
+    "number_undefined": (_data: JasmIr) => {
+      return {
+        needRm: true,
+        dst: { a: ["I"], t: ["b"] },
+      };
+    },
     "string_number": (_data: JasmIr) => {
       const srcT = ["vqp", "bs"];
       if (_data[1] >= 256) {
@@ -260,6 +266,13 @@ instructions.forEach((instruction) => {
         rmBits.push(...rmRegisters[arg2]);
         rmBits.push(...rmRegisters[arg1]);
         return [variant.opcode, makeRm(...rmBits)];
+      }
+      
+      if (
+        variant.dst &&
+        variant.dst.a == "I"
+      ) {
+        return [variant.opcode, arg1];
       }
 
       throw `no correct handler found for - ${mnem} ${data.join(" ")}`;

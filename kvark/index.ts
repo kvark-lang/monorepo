@@ -1,10 +1,17 @@
+import { elfWrap } from "../santa/mod.ts";
+import { ELFABI, ELFMachine, ELFType } from "../santa/types.ts";
 import { factory } from "../jasm/mod.ts";
 
-const { mov } = factory();
+const elf = elfWrap(ELFABI.NONE, ELFType.EXECUTABLE, ELFMachine.M386);
+
+const { mov, int } = factory();
 
 const binary = new Uint8Array(
   [
-    ...mov("ebx", 1),
+    ...elf,
+    ...mov("eax", 1),
+    ...mov("ebx", 0),
+    ...int(0x80)
   ],
 );
 

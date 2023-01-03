@@ -28,7 +28,6 @@ export const instructions = [
   {
     "mnem": "INT",
     "dst": { "a": "I", "t": "b" },
-    "src": { "a": "F", "t": "v" },
     "opcode": 0xCD,
     "modifier": "i",
     "definition": "i",
