@@ -11,8 +11,8 @@ Deno.test({
       name: "test octet",
       fn: () => {
         parser.feed("octet i8 = 10;");
-        parser.feed("word  i16 = 10;")
-                parser.feed("dword  i32 = 10;")
+        parser.feed("word  i16 = 10;");
+        parser.feed("dword  i32 = 10;");
         console.log(parser.results);
       },
     });
