@@ -1,7 +1,8 @@
+@preprocessor typescript
 @{%
-const moo = require("moo");
+import moo from "https://deno.land/x/moo@0.5.1-deno/mod.ts";
 
-const lexer = moo.compile({
+const lexer: any = moo.compile({
     hash: /#/,
     ws:     /[ \t]+/,
     number: /[0-9]+/,
