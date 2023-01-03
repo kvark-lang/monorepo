@@ -18,14 +18,14 @@ Deno.test({
         parser.feed("dword i32 = 100000");
         parser.feed("qword i64 = 100000");
         parser.feed("oword i128 = 100000");
-        assertEquals(parser.results[0], [
-          [
-            [{ type: "octet", name: "i8", value: 100 }],
-            [{ type: "word", name: "i16", value: 10000 }],
-            [{ type: "dword", name: "i32", value: 100000 }],
-            [{ type: "qword", name: "i64", value: 100000 }],
-            [{ type: "oword", name: "i128", value: 100000 }],
-          ],
+        const results = parser.results[0][0]
+        console.log(results)
+        assertEquals(results, [
+          [[{ type: "octet", name: "i8", value: 100 }]],
+          [[{ type: "word", name: "i16", value: 10000 }]],
+          [[{ type: "dword", name: "i32", value: 100000 }]],
+          [[{ type: "qword", name: "i64", value: 100000 }]],
+          [[{ type: "oword", name: "i128", value: 100000 }]],
         ]);
       },
     });

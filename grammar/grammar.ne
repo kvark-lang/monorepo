@@ -2,7 +2,7 @@
 @builtin "whitespace.ne"
 @builtin "number.ne"
 
-Sourcefile -> (IntegerDeclaration):*
+Sourcefile -> (Statement):*
 
 Statement -> IntegerDeclaration
 
