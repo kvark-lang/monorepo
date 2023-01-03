@@ -1,29 +1,15 @@
 @preprocessor typescript
-@{%
-import moo from "https://deno.land/x/moo@0.5.1-deno/mod.ts";
+@builtin "whitespace.ne"
+@builtin "number.ne"
 
-const lexer: any = moo.compile({
-    hash: /#/,
-    ws:     /[ \t]+/,
-    number: /[0-9]+/,
-    word: { match: /\w+/},
-    dq: /"/,
-    eq: /=/,
-    lineend: /;/
-});
-%}
+statement -> intDeclaration:+
 
-#Test Font idk what to say
+intDeclaration -> "octet" _ alphanumeric _ "=" _ number semicolon
+        | "word" _ alphanumeric _ "=" _ number semicolon
+        | "dword" _ alphanumeric _ "=" _ number semicolon
+        | "qword" _ alphanumeric _ "=" _ number semicolon
+        | "oword" _ alphanumeric _ "=" _ number semicolon
 
-@lexer lexer
-
-#comment -> %hash %ws %word
-
-#declare -> "declare" %ws %word %ws %eq %ws %dq %word %dq
-#        |  "declare" %ws %word %ws %eq %ws %word
-
-integers -> "octet" %ws %word %ws %eq %ws %number %lineend
-        | "word" %ws %word %ws %eq %ws %number %lineend
-        | "dword" %ws %word %ws %eq %ws %number %lineend
-        | "qword" %ws %word %ws %eq %ws %number %lineend
-        | "oword" %ws %word %ws %eq %ws %number %lineend
+number -> decimal | int
+semicolon -> ";"
+alphanumeric -> [a-zA-Z0-9]:+

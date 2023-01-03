@@ -12,5 +12,5 @@ TODO:
 
 ## docs
 
-[deno.land](https://deno.land/x/jasm@0.0.1a/mod.ts)
-Later on documentation will be available at Kvark.tech
+[deno.land](https://deno.land/x/jasm@0.0.1a/mod.ts) Later on documentation will
+be available at Kvark.tech

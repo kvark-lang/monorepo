@@ -81,7 +81,7 @@ export function elfWrap(
       ...bittedUint(84),
       // flags here if 32 bit
       ...pBytes32,
-      ...bittedUint(0x1000)
+      ...bittedUint(0x1000),
     ],
   );
 
