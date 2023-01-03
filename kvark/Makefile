@@ -11,7 +11,7 @@ dev-run-tests:
 
 nasm-reference:
 	nasm -fbin index.s -o ${BUILD_DIR}/index.bin
-	ndisasm -b64 ${BUILD_DIR}/index.bin
+	ndisasm -b32 ${BUILD_DIR}/index.bin
 	
 clean:
 	rm -rf ${BUILD_DIR}

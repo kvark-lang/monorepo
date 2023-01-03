@@ -1,16 +1,32 @@
 import { isLittleEndian } from "../endian.ts";
 import { asUint } from "../uint.ts";
 
-import { ELFABI, ELFMachine, ELFType } from "./types.ts";
+import { ELFABI, ELFMachine, ELFSection, ELFType } from "./types.ts";
 
 export function elfWrap(
   abi: ELFABI,
   filetype: ELFType,
   machine: ELFMachine,
-  sections: Array<any>,
+  sections?: Array<ELFSection>,
   bitness?: 32 | 64,
   endian?: "little" | "big",
 ) {
+  // const nonUintBinary = new Array(binary);
+  //
+  // const sections = [".shrtrtab", ".text"];
+  //
+  // if (strings) {
+  //   sections.push(".rodata");
+  // }
+  //
+  // const encoder = new TextEncoder();
+  //
+  // nonUintBinary.concat(
+  //   ...sections.map((v) => encoder.encode(v)),
+  // );
+
+  sections = sections ?? [];
+
   const magic = [0x7f, 0x45, 0x4c, 0x46];
   bitness = bitness ?? 32;
 
@@ -35,24 +51,41 @@ export function elfWrap(
   if (sections.length) {
     shoff = ehdrsz + phdrsz;
   }
-  
-  let phdr = [] as Uint8Array;
-  
+
+  let phdr = [] as unknown as Uint8Array;
+
+  // combines X and R (execute and read)
+  const flags = asUint(5, 32);
+  // if 64 bit, put flags, otherwise p_offset value (where to load from)
+  const pBytes64 = bitness == 64 ? flags : bittedUint(0);
+  // if 32 bit, put flags, otherwise p_align value
+  const pBytes32 = bitness == 32 ? flags : bittedUint(0x1000);
+
   phdr = new Uint8Array(
     [
+      // take PT_LOAD by default
+      // TODO consider other types
       ...asUint(1, 32),
-      ...st64,
-      // TODO make real entrypoints
+      // flags here if 64 bit
+      // possibly also p_offset
+      ...pBytes64,
+      // virtual load address
       ...bittedUint(0x08048000),
+      // physical load address
+      // TODO what if not standard
       ...bittedUint(0x08048000),
-      ...bittedUint(89),
-      ...bittedUint(89),
-      ...st32,
-      ...bittedUint(0x1000),
+      // size
+      // TODO why 89, was this set manually?
+      ...bittedUint(84),
+      // TODO same question
+      ...bittedUint(84),
+      // flags here if 32 bit
+      ...pBytes32,
+      ...bittedUint(0x1000)
     ],
   );
 
-  return [
+  return new Uint8Array([
     // magic numbers which read "ELF" in hex
     ...magic,
     // bitness flag, either 1 or 2
@@ -100,110 +133,20 @@ export function elfWrap(
     ...asUint(phdrsz, 16),
     // number of program headers
     // TODO can there even be more than one?
-          ...asUint(1, 16),
+    ...asUint(1, 16),
     // section header size, predictable
-        ...asUint(shdrsz, 16),
+    // IMPORTANT always set to 0 if no sections in file
+    ...asUint(0, 16),
     // number of section headers
     ...asUint(sections.length, 16),
     // index of shstrtab in section header (describes section names, is a section by itself)
     // TODO add shstrtab, so it's not zero
-      ...asUint(0, 16),
-  ];
+    ...asUint(0, 16),
+    // end of elf header
+    // program header
+    ...phdr,
+  ]);
 }
 
-export function makeSection() {
-}
-
-export function elfFactory(
-  options: {
-    bitness: 32 | 64;
-    abi: {
-      code: number;
-      version: number;
-    };
-    type: number;
-    machine: number;
-    executable: boolean;
-  },
-  binary: Uint8Array,
-  strings?: Array<string>,
-) {
-  const flags = asUint(5, 32);
-
-  const bittedUint = (n: number) => asUint(n, options.bitness);
-  const st64 = options.bitness == 64 ? flags : bittedUint(0);
-
-  const st32 = options.bitness == 32 ? flags : bittedUint(0x1000);
-
-  // TODO make entrypoint modifiable
-  const entry = 0x8000000;
-  const nonUintBinary = new Array(binary);
-
-  const sections = [".shrtrtab", ".text"];
-
-  if (strings) {
-    sections.push(".rodata");
-  }
-
-  const encoder = new TextEncoder();
-
-  nonUintBinary.concat(
-    ...sections.map((v) => encoder.encode(v)),
-  );
-
-  const ehdrsz = options.bitness == 64 ? 64 : 52;
-  const phdrsz = options.bitness == 64 ? 56 : 32;
-  const shdrsz = options.bitness == 64 ? 64 : 40;
-
-  const phdr = new Uint8Array(
-    [
-      ...asUint(options.executable ? 1 : 2, 32),
-      ...st64,
-      // TODO make real entrypoints
-      ...bittedUint(0x08048000),
-      ...bittedUint(0x08048000),
-      ...bittedUint(89),
-      ...bittedUint(89),
-      ...st32,
-      ...bittedUint(0x1000),
-    ],
-  );
-
-  const elf = new Uint8Array(
-    [
-      0x7f,
-      0x45,
-      0x4c,
-      0x46, // ELF magic signature
-      options.bitness / 32, // 1 or 2 - 32 or 64
-      isLittleEndian ? 1 : 2, // 1 or 2 - little or big endian
-      1, // ELF version - always 1,
-      options.abi.code, // ABI code, from const ABI
-      options.abi.version, // ABI version
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0, // padding bits
-      ...asUint(options.type, 16), // ELF file type
-      ...asUint(options.machine, 16), // ELF machine type,
-      ...asUint(1, 32), // ELF version, again
-      ...bittedUint(0x08048000 + 84),
-      ...bittedUint(ehdrsz),
-      ...bittedUint(0),
-      ...asUint(0, 32),
-      ...asUint(ehdrsz, 16),
-      ...asUint(phdrsz, 16),
-      ...asUint(1, 16),
-      ...asUint(shdrsz, 16),
-      ...asUint(0, 16),
-      ...asUint(0, 16),
-      ...phdr,
-      ...binary,
-    ],
-  );
-
-  return elf;
+export function makeSection(name: string) {
 }
