@@ -2,6 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.154.0/testing/asserts.ts";
 import nearley from "npm:nearley";
 import grammar from "../.build/parser.ts";
 
+//Integer
 Deno.test({
   name: "test parsing of integertypes",
   fn: async (t) => {
@@ -32,6 +33,7 @@ Deno.test({
   },
 });
 
+//Floats
 Deno.test({
   name: "test parsing of floattypes",
   fn: async (t) => {
@@ -62,6 +64,7 @@ Deno.test({
   },
 });
 
+//Binaries
 Deno.test({
   name: "test parsing of binarytypes",
   fn: async (t) => {
@@ -86,8 +89,9 @@ Deno.test({
   },
 });
 
+//Booleans
 Deno.test({
-  name: "test parsing of binarytypes",
+  name: "test parsing of booleantypes",
   fn: async (t) => {
     const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
@@ -105,6 +109,68 @@ Deno.test({
           [[{ type: "bool", name: "b", value: true }]],
           [[{ type: "bool", name: "b", value: false}]],
         ]);
+      },
+    });
+  },
+});
+
+// Deno.test({
+//   name: "test parsing of stringtypes",
+//   fn: async (t) => {
+//     const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+
+//     await t.step({
+//       name: "test bits",
+//       fn: () => {
+//         // TODO actually assert something
+//         // URGENT
+//         // FIXME it seems there are many results? is the grammar ambigious?
+//         parser.feed("string a = \"Hallo Welt\"");
+//         const results = parser.results[0][0]
+//         console.log(results)
+//       },
+//     });
+//   },
+// });
+
+//Imports
+Deno.test({
+  name: "test parsing of import",
+  fn: async (t) => {
+    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+
+    await t.step({
+      name: "test import",
+      fn: () => {
+        // TODO actually assert something
+        // URGENT
+        // FIXME it seems there are many results? is the grammar ambigious?
+        parser.feed("import * from \"std\"");
+        parser.feed("import { * } from \"std\"");
+        parser.feed("import {exp, lin} from \"lib_statistics\"");
+        const results = parser.results[0][0]
+        console.log(results)
+      },
+    });
+  },
+});
+
+//Comments
+Deno.test({
+  name: "test parsing of comment",
+  fn: async (t) => {
+    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+
+    await t.step({
+      name: "test comment",
+      fn: () => {
+        // TODO actually assert something
+        // URGENT
+        // FIXME it seems there are many results? is the grammar ambigious?
+        parser.feed("# Kommentar");
+        parser.feed("# Kommentare sind toll");
+        const results = parser.results[0][0]
+        console.log(results)
       },
     });
   },

@@ -4,18 +4,17 @@
 
 Sourcefile -> (Statement):*
 
-Statement -> ImportPackage | IntegerDeclaration | FloatDeclaration | BinaryDeclaration | BooleanDeclaration
+Statement -> ImportPackage | Comment | StringDeclaration | IntegerDeclaration | FloatDeclaration | BinaryDeclaration | BooleanDeclaration
 
-ImportPackage -> ("import" __ alphanumeric __ "from" __ alphanumeric) {%
-															    function(data) {
-															    	const actual = data[0]
-															        return {
-															            type:  actual[0],
-															            name:  actual[2].join().replace(/,/g, ""),
-															            value: actual[6][0] == "true" ? true : false
-															        };
-															    }
-												   			%}
+ImportPackage -> ("import" _ (alphanumeric | anysymbol) _ "from" __ "\"" alphanumeric "\""
+		| "import" _ "{" _ (alphanumeric | (alphanumeric _ ("," _ alphanumeric):*)) _ "}" _ "from" __ "\"" alphanumeric "\""
+		| "import" _ "{" _ (alphanumeric | anysymbol) _ "}" _ "from" __ "\"" alphanumeric "\"")
+
+Comment -> ("#" _ (alphanumeric | (alphanumeric (" " (alphanumeric):+):*)))
+
+#Declaration -> ("declare" _ alphanumeric "=" alphanumeric)
+
+#StringDeclaration -> ("string" __ alphanumeric _ "=" _ "\"" (alphanumeric):* | (alphanumeric (" " alphanumeric):*) "\"")
 
 IntegerDeclaration -> ("octet" __ alphanumeric _ "=" _ number
         | "word" __ alphanumeric _ "=" _ number
@@ -72,5 +71,6 @@ BooleanDeclaration -> ("bool" __ alphanumeric _ "=" _ boolean) {%
 
 
 number -> decimal | int
-alphanumeric -> [a-zA-Z0-9]:+
+alphanumeric -> [a-zA-Z0-9_]:+
+anysymbol -> [.*]:+
 boolean -> "true" | "false"
