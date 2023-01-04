@@ -4,7 +4,18 @@
 
 Sourcefile -> (Statement):*
 
-Statement -> IntegerDeclaration | FloatDeclaration | BinaryDeclaration | BooleanDeclaration
+Statement -> ImportPackage | IntegerDeclaration | FloatDeclaration | BinaryDeclaration | BooleanDeclaration
+
+ImportPackage -> ("import" __ alphanumeric __ "from" __ alphanumeric) {%
+															    function(data) {
+															    	const actual = data[0]
+															        return {
+															            type:  actual[0],
+															            name:  actual[2].join().replace(/,/g, ""),
+															            value: actual[6][0] == "true" ? true : false
+															        };
+															    }
+												   			%}
 
 IntegerDeclaration -> ("octet" __ alphanumeric _ "=" _ number
         | "word" __ alphanumeric _ "=" _ number
