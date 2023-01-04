@@ -4,7 +4,7 @@
 
 Sourcefile -> (Statement):*
 
-Statement -> IntegerDeclaration
+Statement -> IntegerDeclaration | FloatDeclaration | BinaryDeclaration | BooleanDeclaration
 
 IntegerDeclaration -> ("octet" __ alphanumeric _ "=" _ number
         | "word" __ alphanumeric _ "=" _ number
@@ -21,5 +21,45 @@ IntegerDeclaration -> ("octet" __ alphanumeric _ "=" _ number
 															    }
 												   %}
 
+FloatDeclaration -> ("half" __ alphanumeric _ "=" _ number
+		| "float" __ alphanumeric _ "=" _ number
+		| "double" __ alphanumeric _ "=" _ number
+		| "extp" __ alphanumeric _ "=" _ number
+		| "quad" __ alphanumeric _ "=" _ number) {%
+															    function(data) {
+															    	const actual = data[0]
+															        return {
+															            type:  actual[0],
+															            name:  actual[2].join().replace(/,/g, ""),
+															            value: actual[6][0]
+															        };
+															    }
+												   %}
+
+BinaryDeclaration -> ("byte" __ alphanumeric _ "=" _ number
+		| "bit" __ alphanumeric _ "=" _ number) {%
+															    function(data) {
+															    	const actual = data[0]
+															        return {
+															            type:  actual[0],
+															            name:  actual[2].join().replace(/,/g, ""),
+															            value: actual[6][0]
+															        };
+															    }
+												   %}
+
+BooleanDeclaration -> ("bool" __ alphanumeric _ "=" _ boolean) {%
+															    function(data) {
+															    	const actual = data[0]
+															        return {
+															            type:  actual[0],
+															            name:  actual[2].join().replace(/,/g, ""),
+															            value: actual[6][0] == "true" ? true : false
+															        };
+															    }
+												   %}
+
+
 number -> decimal | int
 alphanumeric -> [a-zA-Z0-9]:+
+boolean -> "true" | "false"
