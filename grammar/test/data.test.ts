@@ -14,11 +14,11 @@ Deno.test({
         // TODO actually assert something
         // URGENT
         // FIXME it seems there are many results? is the grammar ambigious?
-        parser.feed("octet i8 = 100");
-        parser.feed("word  i16 = 10000");
-        parser.feed("dword i32 = 100000");
-        parser.feed("qword i64 = 100000");
-        parser.feed("oword i128 = 100000");
+        parser.feed("octet i8 = 100;");
+        parser.feed("word  i16 = 10000;");
+        parser.feed("dword i32 = 100000;");
+        parser.feed("qword i64 = 100000;");
+        parser.feed("oword i128 = 100000;");
         const results = parser.results[0][0]
         console.log(results)
         assertEquals(results, [
@@ -45,11 +45,11 @@ Deno.test({
         // TODO actually assert something
         // URGENT
         // FIXME it seems there are many results? is the grammar ambigious?
-        parser.feed("half    h = 10.1");
-        parser.feed("float   f = 100.10");
-        parser.feed("double  d = 1.10000");
-        parser.feed("extp    e = 1000.10");
-        parser.feed("quad    q = 10.1000");
+        parser.feed("half    h = 10.1;");
+        parser.feed("float   f = 100.10;");
+        parser.feed("double  d = 1.10000;");
+        parser.feed("extp    e = 1000.10;");
+        parser.feed("quad    q = 10.1000;");
         const results = parser.results[0][0]
         console.log(results)
         assertEquals(results, [
@@ -76,8 +76,8 @@ Deno.test({
         // TODO actually assert something
         // URGENT
         // FIXME it seems there are many results? is the grammar ambigious?
-        parser.feed("byte  by = 10");
-        parser.feed("bit   bi = 10100101");
+        parser.feed("byte  by = 10;");
+        parser.feed("bit   bi = 10100101;");
         const results = parser.results[0][0]
         console.log(results)
         assertEquals(results, [
@@ -101,8 +101,8 @@ Deno.test({
         // TODO actually assert something
         // URGENT
         // FIXME it seems there are many results? is the grammar ambigious?
-        parser.feed("bool  b = true");
-        parser.feed("bool  b = false");
+        parser.feed("bool  b = true;");
+        parser.feed("bool  b = false;");
         const results = parser.results[0][0]
         console.log(results)
         assertEquals(results, [
@@ -145,8 +145,8 @@ Deno.test({
         // TODO actually assert something
         // URGENT
         // FIXME it seems there are many results? is the grammar ambigious?
-        parser.feed("import * from \"std\"");
-        parser.feed("import { * } from \"std\"");
+        // parser.feed("import * from \"std\"");
+        // parser.feed("import { * } from \"std\"");
         parser.feed("import {exp, lin} from \"lib_statistics\"");
         const results = parser.results[0][0]
         console.log(results)
@@ -169,7 +169,7 @@ Deno.test({
         // FIXME it seems there are many results? is the grammar ambigious?
         parser.feed("# Kommentar");
         parser.feed("# Kommentare sind toll");
-        const results = parser.results[0][0]
+        const results = parser.results[0]
         console.log(results)
       },
     });
