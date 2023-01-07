@@ -14,12 +14,8 @@ Deno.test({
         // TODO actually assert something
         // URGENT
         // FIXME it seems there are many results? is the grammar ambigious?
-        parser.feed("octet i8 = 100;");
-        parser.feed("word  i16 = 10000;");
-        parser.feed("dword i32 = 100000;");
-        parser.feed("qword i64 = 100000;");
-        parser.feed("oword i128 = 100000;");
-        const results = parser.results[0][0]
+        parser.feed("octet i8 = 100; word  i16 = 10000; dword i32 = 100000; qword i64 = 100000; oword i128 = 100000;");
+        const results = parser.results[0]
         console.log(results)
         assertEquals(results, [
           [[{ type: "octet", name: "i8", value: 100 }]],

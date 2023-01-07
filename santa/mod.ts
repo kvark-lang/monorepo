@@ -84,19 +84,24 @@ export function elfWrap(
       ...bittedUint(0x1000),
     ],
   );
+  
+  const encoded = new TextEncoder().encode(".shstrtab")
 
-  const sh_flags = asUint(4, 32); //???
-
-  shdr = new Uint8Array(
+  const shdr = new Uint8Array(
     [
-      //TODO sh_name: specify name of section
-      //Value = Index into the shdr-string table
-      //gives location of a null-terminated string
-      
-
-      //sh_addr, section appears in memory image of process
-      //32-bit implemented?? 64-bit not 
-      ...bittedUint(0x0C)
+    // section header
+    ...asUint(0, 32),
+    ...asUint(3, 32),
+    ...asUint(0, 32),
+    ...asUint(0, 32),   
+    ...asUint(84+40, 32),
+    ...asUint(encoded.length+1, 32),
+    ...asUint(0, 32),
+    ...asUint(0, 32),
+    ...asUint(0x1000, 32),
+    ...asUint(0, 32),
+    ...encoded,
+    0
     ]
   )
 
@@ -138,7 +143,7 @@ export function elfWrap(
     // offset of program header from start of file, in our case, the size of the elf header (program header is right after it)
     ...bittedUint(ehdrsz),
     // offset of section header (if no sections - 0, otherwise elf header size + program header size, since it comes right after them)
-    ...bittedUint(shoff),
+    ...bittedUint(84 ?? shoff),
     // CPU flags
     // TODO figure out what those do
     ...asUint(0, 32),
@@ -151,15 +156,16 @@ export function elfWrap(
     ...asUint(1, 16),
     // section header size, predictable
     // IMPORTANT always set to 0 if no sections in file
-    ...asUint(0, 16),
+    ...asUint(shdrsz, 16),
     // number of section headers
-    ...asUint(sections.length, 16),
+    ...asUint(1, 16),
     // index of shstrtab in section header (describes section names, is a section by itself)
     // TODO add shstrtab, so it's not zero
     ...asUint(0, 16),
     // end of elf header
     // program header
     ...phdr,
+    ...shdr
   ]);
 }
 
