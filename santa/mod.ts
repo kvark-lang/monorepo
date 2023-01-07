@@ -85,6 +85,21 @@ export function elfWrap(
     ],
   );
 
+  const sh_flags = asUint(4, 32); //???
+
+  shdr = new Uint8Array(
+    [
+      //TODO sh_name: specify name of section
+      //Value = Index into the shdr-string table
+      //gives location of a null-terminated string
+      
+
+      //sh_addr, section appears in memory image of process
+      //32-bit implemented?? 64-bit not 
+      ...bittedUint(0x0C)
+    ]
+  )
+
   return new Uint8Array([
     // magic numbers which read "ELF" in hex
     ...magic,
@@ -147,6 +162,8 @@ export function elfWrap(
     ...phdr,
   ]);
 }
+
+
 
 export function makeSection(name: string) {
 }
