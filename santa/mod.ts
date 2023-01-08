@@ -49,7 +49,7 @@ export function elf(
 		binary.push(...asUint(0, bitness));
 		// Initialize the function to splice the program header in later
 		putProgramHeaderOffset = (value: number) => {
-			binary.splice(binary.length, 0, value);
+			binary.splice(binary.length, bitness / 8, ...asUint(value, bitness));
 		};
 	}
 	const returnObject = {
