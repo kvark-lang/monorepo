@@ -3,10 +3,10 @@ import { asUint } from "../uint.ts";
 
 import {
 	ELFABI,
+	ELFConfiguration,
 	ELFMachine,
 	ELFSection,
 	ELFType,
-	ELFConfiguration,
 } from "./types.ts";
 
 export function elf(
@@ -14,12 +14,16 @@ export function elf(
 	bitness?: 32 | 64,
 	isBigEndian?: boolean,
 ) {
+	const entrypoint = 0x08048000;
 	const { machine, filetype, abi } = config;
 	// Set defaults if .endian and .bitness not present
 	bitness = bitness ?? 32;
 	isBigEndian = endianness.isBigEndian;
 	// Initialize ELF with constant magic numbers
 	const binary = [0x7f, 0x45, 0x4c, 0x46];
+
+	const putProgramHeaderoffsetL: (offset: number) => void = null;
+
 	// ELF header
 	{
 		// Push bitness value, 1 for 32, 2 for 64
@@ -33,9 +37,25 @@ export function elf(
 		binary.push(0); // ABI subversion, 0 is fine
 		// Padding bytes, no meaning
 		binary.push(0, 0, 0, 0, 0, 0, 0);
+		// ELF filetype
+		binary.push(...asUint(config.filetype, 16));
+		// ELF machine type
+		binary.push(...asUint(config.machine, 16));
+		// ELF spec version - can only be 1
+		binary.push(...asUint(1, 32));
+		// Entrypoint, size varies by bitness
+		binary.push(entrypoint, bitness);
+		// Set program to zero
+		binary.push(...asUint(0, bitness));
+		// Initialize the function to splice the program header in later
+		putProgramHeaderOffset = (value: number) => {
+			binary.splice(binary.length, 0, value);
+		};
 	}
 	const returnObject = {
 		addProgramHeader: () => {
+			{
+			}
 			return returnObject;
 		},
 		addSection: () => {
