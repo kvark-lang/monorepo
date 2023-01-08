@@ -4,7 +4,7 @@ import { factory } from "../jasm/mod.ts";
 
 const elf = elfWrap(ELFABI.NONE, ELFType.EXECUTABLE, ELFMachine.M386);
 
-const { mov, int } = factory();
+const { mov, int, add } = factory();
 
 const binary = new Uint8Array(
   [

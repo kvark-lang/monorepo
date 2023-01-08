@@ -1,6 +1,6 @@
-import { elfWrap } from "../mod.ts";
-import { ELFABI, ELFMachine, ELFType } from "../types.ts";
+import { elf } from "../mod.ts";
+import { ELFABI, ELFMachine, ELFType, ELFConfiguration } from "../types.ts";
 
-const binary = elfWrap(ELFABI.NONE, ELFType.EXECUTABLE, ELFMachine.M386);
+const executable = elf({abi: ELFABI.NONE, filetype: ELFType.EXECUTABLE, machine: ELFMachine.M386});
 
-Deno.writeFileSync("deno.bin", binary);
+console.log(executable)

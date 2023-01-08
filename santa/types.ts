@@ -79,6 +79,12 @@ export enum ELFMachine {
   M65816 = 0x101,
 }
 
+export interface ELFConfiguration {
+  abi: ELFABI,
+  filetype: ELFType,
+  machine: ELFMachine
+}
+
 export interface ELFSection {
   name: string;
 }
