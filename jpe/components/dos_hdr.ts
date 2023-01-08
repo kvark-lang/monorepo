@@ -1,4 +1,7 @@
 import { asUint } from "../../uint.ts";
+//could need the endian,
+import { isLittleEndian } from "../../endian.ts";
+
 let doshdr = [] as unknown as Uint8Array;
 
 const magic = 0x5A4D;
