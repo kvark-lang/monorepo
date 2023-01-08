@@ -1,28 +1,13 @@
-export function asUint(number: number, bitness: 16 | 32 | 64) {
-	let r1 = 0;
-	let r2 = 0;
-	let r4 = 0;
-	let r3 = 0;
-	switch (bitness) {
-		case 16:
-			r1 = number;
-			r2 = number >> 8;
-			return [r1, r2];
-		case 32:
-			r1 = number;
-			r2 = number >> 8;
-			r3 = number >> 16;
-			r4 = number >> 24;
-			return [r1, r2, r3, r4];
+export function asUint(number: number | bigint, bitness: 16 | 32 | 64) {
+	const buffer = new ArrayBuffer(bitness! / 8);
+	switch (bitness!) {
 		case 64:
-			r1 = number;
-			r2 = number >> 8;
-			r3 = number >> 16;
-			r4 = number >> 24;
-			return [r1, r2, r3, r4, 0, 0, 0, 0];
-
+			new DataView(buffer).setBigUint64(0, number as bigint, true);
+			break;
 		default:
+			new DataView(buffer)[`setUint${bitness}`](0, number as number, true);
 			break;
 	}
-	return [];
+
+	return Array.from(new Uint8Array(buffer));
 }

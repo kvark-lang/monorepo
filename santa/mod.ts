@@ -17,17 +17,17 @@ export function elf(
 	const entrypoint = 0x08048000;
 	const { machine, filetype, abi } = config;
 	// Set defaults if .endian and .bitness not present
-	bitness = bitness ?? 32;
+	if (bitness === undefined) bitness = 32;
 	isBigEndian = endianness.isBigEndian;
 	// Initialize ELF with constant magic numbers
 	const binary = [0x7f, 0x45, 0x4c, 0x46];
 
-	const putProgramHeaderoffsetL: (offset: number) => void = null;
+	let putProgramHeaderoffset: (offset: number) => void;
 
 	// ELF header
 	{
 		// Push bitness value, 1 for 32, 2 for 64
-		binary.push(bitness);
+		binary.push(bitness!);
 		// Push endianness value, 1 for little, 2 for big
 		binary.push(isBigEndian === true ? 2 : 1);
 		// ELF version, it is always 1
@@ -48,8 +48,8 @@ export function elf(
 		// Set program to zero
 		binary.push(...asUint(0, bitness));
 		// Initialize the function to splice the program header in later
-		putProgramHeaderOffset = (value: number) => {
-			binary.splice(binary.length, bitness / 8, ...asUint(value, bitness));
+		putProgramHeaderoffset = (value: number) => {
+			binary.splice(binary.length, bitness! / 8, ...asUint(value, bitness!));
 		};
 	}
 	const returnObject = {
